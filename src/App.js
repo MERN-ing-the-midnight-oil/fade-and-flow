@@ -1,11 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { useTransition, animated } from "react-spring";
 
-const images = [
-	`${process.env.PUBLIC_URL}/pour1.png`,
-	`${process.env.PUBLIC_URL}/pour2.png`,
-	`${process.env.PUBLIC_URL}/pour3.png`,
-];
+// const images = [
+// 	`${process.env.PUBLIC_URL}/pour/pour1.png`,
+// 	`${process.env.PUBLIC_URL}/pour/pour2.png`,
+// 	`${process.env.PUBLIC_URL}/pour/pour3.png`,
+// ];
+
+// Set up a dynamic context for the 'pour' directory
+const imageContext = require.context("./pour", false, /\.(png|jpe?g|svg)$/);
+
+// Map over the keys (file paths) and call the context function to get the actual image paths
+const images = imageContext.keys().map(imageContext);
+
 const fadeDuration = 3000;
 
 function PreloadImages() {
@@ -15,7 +22,7 @@ function PreloadImages() {
 				<img
 					key={index}
 					src={src}
-					alt={`preload-image-${index}`}
+					alt={`decorative swirls-${index}`}
 				/>
 			))}
 		</div>
