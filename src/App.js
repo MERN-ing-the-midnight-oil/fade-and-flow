@@ -1,12 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useTransition, animated } from "react-spring";
-//    "react-spring": "^9.7.2",
 
-// const animationImageCount = 26;
-// const images = Array.from(
-// 	{ length: animationImageCount },
-// 	(_, index) => `${process.env.PUBLIC_URL}/pour${index + 1}.png`
-// );
 const images = [
 	`${process.env.PUBLIC_URL}/pour1.png`,
 	`${process.env.PUBLIC_URL}/pour2.png`,
@@ -21,7 +15,7 @@ function PreloadImages() {
 				<img
 					key={index}
 					src={src}
-					alt="preload"
+					alt={`preload-image-${index}`}
 				/>
 			))}
 		</div>
@@ -49,6 +43,7 @@ function App() {
 
 	return (
 		<div className="App">
+			<PreloadImages />
 			<h1>Test Content</h1>
 			<header style={{ position: "relative", width: "100%", height: "400px" }}>
 				{transitions((style, item) => (
