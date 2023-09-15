@@ -1,7 +1,30 @@
 import React, { useState, useEffect } from "react";
 import { useTransition, animated } from "react-spring";
 
+const globalStyles = {
+	container: {
+		padding: "20px",
+		fontFamily: "Arial, sans-serif",
+	},
+	title: {
+		fontSize: "1.8em",
+		fontWeight: "bold",
+		marginBottom: "20px",
+	},
+	description: {
+		fontSize: "1.1em",
+		maxWidth: "800px",
+		margin: "0 auto 30px",
+		lineHeight: "1.5",
+	},
+	link: {
+		color: "#0077cc",
+		textDecoration: "none",
+	},
+};
+
 const imageGroups = {
+	//put your numbered image files in arrays here
 	pour: [
 		`${process.env.PUBLIC_URL}/pour/pour1.png`,
 		`${process.env.PUBLIC_URL}/pour/pour2.png`,
@@ -17,6 +40,13 @@ const imageGroups = {
 		`${process.env.PUBLIC_URL}/stein/stein2.png`,
 		`${process.env.PUBLIC_URL}/stein/stein3.png`,
 		`${process.env.PUBLIC_URL}/stein/stein4.png`,
+	],
+	latte: [
+		`${process.env.PUBLIC_URL}/latte/latte1.png`,
+		`${process.env.PUBLIC_URL}/latte/latte2.png`,
+		`${process.env.PUBLIC_URL}/latte/latte3.png`,
+		`${process.env.PUBLIC_URL}/latte/latte4.png`,
+		`${process.env.PUBLIC_URL}/latte/latte5.png`,
 	],
 };
 
@@ -75,15 +105,30 @@ function AnimatedImage({ group, positionTop }) {
 
 function App() {
 	return (
-		<div className="App">
+		<div
+			className="App"
+			style={globalStyles.container}>
 			<PreloadImages />
 			<h1>Fade and Flow Animations</h1>
 			<h2>
-				I created the following animations as examples of what one can do by
-				upscaling and versioning an image repeatedly using Midjourney AI. Please
-				visit https://www.youtube.com/watch?v=1T798gp0cPI&ab_channel=RhysSmoker
-				to watch a three minute tutorial on how to generate a series of images
-				that will look great in this format.{" "}
+				The following image collections were each created and ordered using
+				Midjourney AI in only a few minutes. Please visit{" "}
+				<a
+					href="https://www.youtube.com/watch?v=1T798gp0cPI&ab_channel=RhysSmoker"
+					target="_blank"
+					rel="noopener noreferrer">
+					my tutorial
+				</a>{" "}
+				to learn how to QUICKLY generate a series of images that fade and flow
+				together in a fun way when animated. And if you'd like to try it out
+				yourself, please feel free to copy{" "}
+				<a
+					href="https://github.com/MERN-ing-the-midnight-oil/fade-and-flow"
+					target="_blank"
+					rel="noopener noreferrer">
+					the code
+				</a>{" "}
+				I wrote to display them here.
 			</h2>
 			<header style={{ position: "relative", width: "100%", height: "1200px" }}>
 				<AnimatedImage
@@ -97,6 +142,10 @@ function App() {
 				<AnimatedImage
 					group="stein"
 					positionTop="800px"
+				/>
+				<AnimatedImage
+					group="latte"
+					positionTop="1200px"
 				/>
 			</header>
 		</div>
