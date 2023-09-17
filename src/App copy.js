@@ -70,29 +70,14 @@ function PreloadImages() {
 
 function AnimatedImage({ group, positionTop }) {
 	const [currentIndex, setCurrentIndex] = useState(0);
-	const [direction, setDirection] = useState("forward"); // New state for direction
 
 	useEffect(() => {
 		const interval = setInterval(() => {
-			if (direction === "forward") {
-				if (currentIndex < imageGroups[group].length - 1) {
-					setCurrentIndex((prev) => prev + 1);
-				} else {
-					setDirection("backward");
-					setCurrentIndex((prev) => prev - 1);
-				}
-			} else {
-				if (currentIndex > 0) {
-					setCurrentIndex((prev) => prev - 1);
-				} else {
-					setDirection("forward");
-					setCurrentIndex((prev) => prev + 1);
-				}
-			}
+			setCurrentIndex((prev) => (prev + 1) % imageGroups[group].length);
 		}, fadeDuration * 2);
 
 		return () => clearInterval(interval);
-	}, [group, currentIndex, direction]);
+	}, [group]);
 
 	const transitions = useTransition(currentIndex, {
 		from: { opacity: 0, filter: "brightness(0.5)" },

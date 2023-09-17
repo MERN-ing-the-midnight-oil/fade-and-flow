@@ -1,70 +1,62 @@
-# Getting Started with Create React App
+# Fade and Flow Animations with React and React-Spring
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This repository allows you to animate sequences of images in a smooth fading transition using React and React-Spring. It works well to animate images created in series using Midjourney AI. You will need to modify the code to add your own images.
 
-## Available Scripts
+## 🚀 Getting Started
 
-In the project directory, you can run:
+### Pre-requisites
 
-### `npm start`
+- Node.js
+- npm or yarn
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### Installation
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+1.  **Clone the repository**:
 
-### `npm test`
+    ```
+    git clone https://github.com/MERN-ing-the-midnight-oil/fade-and-flow.git
+    ```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+2.  **Install the dependencies**:
 
-### `npm run build`
+         "react": "^18.2.0",
+         "react-dom": "^18.2.0",
+         "react-scripts": "5.0.1",
+         "react-spring": "^9.7.2",
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+    ```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+    ```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+3.  **Run the app**:
+    ```
+    npm start
+    ```
 
-### `npm run eject`
+## 🖼️ Adding or Replacing Image Series
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+To infuse your own series of images into the animation, follow these steps:
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+1. **Name Your Images**:
+   Ensure your images are named sequentially for the series like:image1.png, image2.png, ..., imageN.png
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+2. **Place Your Images**:
+   Create a new folder under the `public` directory (e.g., `myImages`). Add your image series to this directory.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+3. **Update `imageGroups` in `App.js`**:
+   Add a new entry for your image series. For instance:
 
-## Learn More
+javascript
+myImages: [
+`${process.env.PUBLIC_URL}/myImages/image1.png`,
+`${process.env.PUBLIC_URL}/myImages/image2.png`,
+...
+]
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+4.  **Render Your Animation:**
+    Lastly, within the App component, you'll need to render the new sequence. Add:
+    <AnimatedImage group="myImages" positionTop="Xpx" />
+    Adjust positionTop as desired to position your animation.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+📜 License
+This project is shared under the MIT License. Feel free to contribute, distribute, and adapt as per your needs!
