@@ -70,14 +70,29 @@ function PreloadImages() {
 
 function AnimatedImage({ group, positionTop }) {
 	const [currentIndex, setCurrentIndex] = useState(0);
+	const [direction, setDirection] = useState("forward"); // New state for direction
 
 	useEffect(() => {
 		const interval = setInterval(() => {
-			setCurrentIndex((prev) => (prev + 1) % imageGroups[group].length);
+			if (direction === "forward") {
+				if (currentIndex < imageGroups[group].length - 1) {
+					setCurrentIndex((prev) => prev + 1);
+				} else {
+					setDirection("backward");
+					setCurrentIndex((prev) => prev - 1);
+				}
+			} else {
+				if (currentIndex > 0) {
+					setCurrentIndex((prev) => prev - 1);
+				} else {
+					setDirection("forward");
+					setCurrentIndex((prev) => prev + 1);
+				}
+			}
 		}, fadeDuration * 2);
 
 		return () => clearInterval(interval);
-	}, [group]);
+	}, [group, currentIndex, direction]);
 
 	const transitions = useTransition(currentIndex, {
 		from: { opacity: 0, filter: "brightness(0.5)" },
@@ -104,6 +119,23 @@ function AnimatedImage({ group, positionTop }) {
 }
 
 function App() {
+	const [toggles, setToggles] = useState({
+		pour: true,
+		qwerty: true,
+		stein: true,
+		latte: true,
+	});
+	const buttonStyle = {
+		position: "absolute",
+		left: "10px",
+		zIndex: 20,
+		backgroundColor: "#fff",
+		border: "1px solid #ddd",
+		borderRadius: "4px",
+		padding: "5px 10px",
+		cursor: "pointer",
+	};
+
 	return (
 		<div
 			className="App"
@@ -130,23 +162,78 @@ function App() {
 				</a>{" "}
 				I wrote to display them here.
 			</h2>
-			<header style={{ position: "relative", width: "100%", height: "1200px" }}>
-				<AnimatedImage
-					group="pour"
-					positionTop="0px"
-				/>
-				<AnimatedImage
-					group="qwerty"
-					positionTop="400px"
-				/>
-				<AnimatedImage
-					group="stein"
-					positionTop="800px"
-				/>
-				<AnimatedImage
-					group="latte"
-					positionTop="1200px"
-				/>
+			<header style={{ position: "relative", width: "100%", height: "1600px" }}>
+				<button
+					style={{ ...buttonStyle, top: "0px" }}
+					onClick={() => {
+						setToggles((prev) => ({ ...prev, pour: !prev.pour }));
+					}}>
+					{toggles.pour ? "Hide" : "Show"}
+				</button>
+				{toggles.pour ? (
+					<AnimatedImage
+						group="pour"
+						positionTop="0px"
+					/>
+				) : (
+					<div style={{ position: "absolute", top: "0px", left: "200px" }}>
+						pour
+					</div>
+				)}
+
+				<button
+					style={{ ...buttonStyle, top: "400px" }}
+					onClick={() => {
+						setToggles((prev) => ({ ...prev, qwerty: !prev.qwerty }));
+					}}>
+					{toggles.qwerty ? "Hide" : "Show"}
+				</button>
+				{toggles.qwerty ? (
+					<AnimatedImage
+						group="qwerty"
+						positionTop="400px"
+					/>
+				) : (
+					<div style={{ position: "absolute", top: "400px", left: "200px" }}>
+						qwerty
+					</div>
+				)}
+
+				<button
+					style={{ ...buttonStyle, top: "800px" }}
+					onClick={() => {
+						setToggles((prev) => ({ ...prev, stein: !prev.stein }));
+					}}>
+					{toggles.stein ? "Hide" : "Show"}
+				</button>
+				{toggles.stein ? (
+					<AnimatedImage
+						group="stein"
+						positionTop="800px"
+					/>
+				) : (
+					<div style={{ position: "absolute", top: "800px", left: "200px" }}>
+						stein
+					</div>
+				)}
+
+				<button
+					style={{ ...buttonStyle, top: "1200px" }}
+					onClick={() => {
+						setToggles((prev) => ({ ...prev, latte: !prev.latte }));
+					}}>
+					{toggles.latte ? "Hide" : "Show"}
+				</button>
+				{toggles.latte ? (
+					<AnimatedImage
+						group="latte"
+						positionTop="1200px"
+					/>
+				) : (
+					<div style={{ position: "absolute", top: "1200px", left: "200px" }}>
+						latte
+					</div>
+				)}
 			</header>
 		</div>
 	);
