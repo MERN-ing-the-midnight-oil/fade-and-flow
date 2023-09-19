@@ -48,6 +48,13 @@ const imageGroups = {
 		`${process.env.PUBLIC_URL}/latte/latte4.png`,
 		`${process.env.PUBLIC_URL}/latte/latte5.png`,
 	],
+	// aquarium: [
+	// 	`${process.env.PUBLIC_URL}/aquarium/aquarium1.png`,
+	// 	`${process.env.PUBLIC_URL}/aquarium/aquarium2.png`,
+	// 	`${process.env.PUBLIC_URL}/aquarium/aquarium3.png`,
+	// 	`${process.env.PUBLIC_URL}/aquarium/aquarium4.png`,
+	// 	`${process.env.PUBLIC_URL}/aquarium/aquarium5.png`,
+	// ],
 };
 
 function PreloadImages() {
@@ -115,6 +122,56 @@ function AnimatedImage({ group, positionTop, fadeDuration }) {
 		/>
 	));
 }
+function ImageGroup({
+	group,
+	top,
+	fadeDuration,
+	handleFadeDurationChange,
+	toggle,
+	setToggle,
+}) {
+	const buttonStyle = {
+		position: "absolute",
+		left: "10px",
+		zIndex: 20,
+		backgroundColor: "#fff",
+		border: "1px solid #ddd",
+		borderRadius: "4px",
+		padding: "5px 10px",
+		cursor: "pointer",
+	};
+
+	return (
+		<div>
+			<div style={{ ...buttonStyle, top }}>
+				<button
+					onClick={() =>
+						setToggle((prev) => ({ ...prev, [group]: !prev[group] }))
+					}>
+					{toggle[group] ? `Hide this series: ` : `Show this series: `}
+				</button>
+				<span>Animation speed: </span>
+				<input
+					type="range"
+					min="100"
+					max="5000"
+					value={fadeDuration}
+					onChange={(e) => handleFadeDurationChange(e.target.value)}
+				/>
+				<span>{fadeDuration} ms</span>
+			</div>
+			{toggle[group] ? (
+				<AnimatedImage
+					group={group}
+					positionTop={top}
+					fadeDuration={fadeDuration}
+				/>
+			) : (
+				<div style={{ position: "absolute", top, left: "200px" }}>{group}</div>
+			)}
+		</div>
+	);
+}
 
 function App() {
 	const [fadeDuration, setFadeDuration] = useState(2000); // Moved inside App component
@@ -168,121 +225,17 @@ function App() {
 				I wrote to display them here.
 			</h2>
 			<header style={{ position: "relative", width: "100%", height: "1600px" }}>
-				<div style={{ ...buttonStyle, top: "0px" }}>
-					<button
-						onClick={() => {
-							setToggles((prev) => ({ ...prev, pour: !prev.pour }));
-						}}>
-						{toggles.pour ? "Hide this series: " : "Show this series: "}
-					</button>
-					<span>Animation speed: </span>
-					<input
-						type="range"
-						min="100"
-						max="5000"
-						value={fadeDuration}
-						onChange={(e) => handleFadeDurationChange(e.target.value)}
+				{Object.keys(imageGroups).map((group, index) => (
+					<ImageGroup
+						key={group}
+						group={group}
+						top={`${400 * index}px`}
+						fadeDuration={fadeDuration}
+						handleFadeDurationChange={handleFadeDurationChange}
+						toggle={toggles}
+						setToggle={setToggles}
 					/>
-					<span>{fadeDuration} ms</span>
-				</div>
-				{toggles.pour ? (
-					<AnimatedImage
-						group="pour"
-						positionTop="0px"
-						fadeDuration={fadeDuration} // add this line
-					/>
-				) : (
-					<div style={{ position: "absolute", top: "0px", left: "200px" }}>
-						pour
-					</div>
-				)}
-
-				<div style={{ ...buttonStyle, top: "400px" }}>
-					<button
-						onClick={() => {
-							setToggles((prev) => ({ ...prev, qwerty: !prev.qwerty }));
-						}}>
-						{toggles.qwerty ? "Hide this series:" : "Show this series: "}
-					</button>
-					<span>Animation speed: </span>
-					<input
-						type="range"
-						min="100"
-						max="5000"
-						value={fadeDuration}
-						onChange={(e) => handleFadeDurationChange(e.target.value)}
-					/>
-					<span>{fadeDuration} ms</span>
-				</div>
-				{toggles.qwerty ? (
-					<AnimatedImage
-						group="qwerty"
-						positionTop="400px"
-						fadeDuration={fadeDuration} // add this line
-					/>
-				) : (
-					<div style={{ position: "absolute", top: "400px", left: "200px" }}>
-						qwerty
-					</div>
-				)}
-
-				<div style={{ ...buttonStyle, top: "800px" }}>
-					<button
-						onClick={() => {
-							setToggles((prev) => ({ ...prev, stein: !prev.stein }));
-						}}>
-						{toggles.stein ? "Hide this series." : "Show this series: "}
-					</button>
-					<span>Animation speed: </span>
-					<input
-						type="range"
-						min="100"
-						max="5000"
-						value={fadeDuration}
-						onChange={(e) => handleFadeDurationChange(e.target.value)}
-					/>
-					<span>{fadeDuration} ms</span>
-				</div>
-				{toggles.stein ? (
-					<AnimatedImage
-						group="stein"
-						positionTop="800px"
-						fadeDuration={fadeDuration} // add this line
-					/>
-				) : (
-					<div style={{ position: "absolute", top: "800px", left: "200px" }}>
-						stein
-					</div>
-				)}
-
-				<div style={{ ...buttonStyle, top: "1200px" }}>
-					<button
-						onClick={() => {
-							setToggles((prev) => ({ ...prev, latte: !prev.latte }));
-						}}>
-						{toggles.latte ? "Hide this series" : "Show this series"}
-					</button>
-					<span> Animation speed: </span>
-					<input
-						type="range"
-						min="100"
-						max="5000"
-						value={fadeDuration}
-						onChange={(e) => handleFadeDurationChange(e.target.value)}
-					/>
-					<span>{fadeDuration} ms</span>
-				</div>
-				{toggles.latte ? (
-					<AnimatedImage
-						group="latte"
-						positionTop="1200px"
-						fadeDuration={fadeDuration} // add this line
-					/>
-				) : (
-					<div style={{ position: "absolute", top: "1200px", left: "200px" }}>
-						latte
-					</div>
-				)}
+				))}
 			</header>
 		</div>
 	);
