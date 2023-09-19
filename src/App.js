@@ -117,7 +117,7 @@ function AnimatedImage({ group, positionTop, fadeDuration }) {
 }
 
 function App() {
-	const [fadeDuration, setFadeDuration] = useState(1000); // Moved inside App component
+	const [fadeDuration, setFadeDuration] = useState(2000); // Moved inside App component
 	const [toggles, setToggles] = useState({
 		pour: true,
 		qwerty: true,
@@ -173,8 +173,9 @@ function App() {
 						onClick={() => {
 							setToggles((prev) => ({ ...prev, pour: !prev.pour }));
 						}}>
-						{toggles.pour ? "Hide" : "Show"}
+						{toggles.pour ? "Hide this series: " : "Show this series: "}
 					</button>
+					<span>Animation speed: </span>
 					<input
 						type="range"
 						min="100"
@@ -201,8 +202,9 @@ function App() {
 						onClick={() => {
 							setToggles((prev) => ({ ...prev, qwerty: !prev.qwerty }));
 						}}>
-						{toggles.qwerty ? "Hide" : "Show"}
+						{toggles.qwerty ? "Hide this series:" : "Show this series: "}
 					</button>
+					<span>Animation speed: </span>
 					<input
 						type="range"
 						min="100"
@@ -229,8 +231,9 @@ function App() {
 						onClick={() => {
 							setToggles((prev) => ({ ...prev, stein: !prev.stein }));
 						}}>
-						{toggles.stein ? "Hide" : "Show"}
+						{toggles.stein ? "Hide this series." : "Show this series: "}
 					</button>
+					<span>Animation speed: </span>
 					<input
 						type="range"
 						min="100"
@@ -257,8 +260,9 @@ function App() {
 						onClick={() => {
 							setToggles((prev) => ({ ...prev, latte: !prev.latte }));
 						}}>
-						{toggles.latte ? "Hide" : "Show"}
+						{toggles.latte ? "Hide this series" : "Show this series"}
 					</button>
+					<span> Animation speed: </span>
 					<input
 						type="range"
 						min="100"
