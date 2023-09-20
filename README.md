@@ -53,10 +53,5 @@ myImages: [
 ...
 ]
 
-4.  **Render Your Animation:**
-    Lastly, within the App component, you'll need to render the new sequence. Add:
-    <AnimatedImage group="myImages" positionTop="Xpx" />
-    Adjust positionTop as desired to position your animation.
-
 📜 License
 This project is shared under the MIT License. Feel free to contribute, distribute, and adapt as per your needs!
