@@ -48,13 +48,13 @@ const imageGroups = {
 		`${process.env.PUBLIC_URL}/latte/latte4.png`,
 		`${process.env.PUBLIC_URL}/latte/latte5.png`,
 	],
-	// aquarium: [
-	// 	`${process.env.PUBLIC_URL}/aquarium/aquarium1.png`,
-	// 	`${process.env.PUBLIC_URL}/aquarium/aquarium2.png`,
-	// 	`${process.env.PUBLIC_URL}/aquarium/aquarium3.png`,
-	// 	`${process.env.PUBLIC_URL}/aquarium/aquarium4.png`,
-	// 	`${process.env.PUBLIC_URL}/aquarium/aquarium5.png`,
-	// ],
+	aquarium: [
+		`${process.env.PUBLIC_URL}/aquarium/aquarium1.png`,
+		`${process.env.PUBLIC_URL}/aquarium/aquarium2.png`,
+		`${process.env.PUBLIC_URL}/aquarium/aquarium3.png`,
+		`${process.env.PUBLIC_URL}/aquarium/aquarium4.png`,
+		`${process.env.PUBLIC_URL}/aquarium/aquarium5.png`,
+	],
 };
 
 function PreloadImages() {
@@ -75,7 +75,8 @@ function PreloadImages() {
 
 function AnimatedImage({ group, positionTop, fadeDuration }) {
 	const [currentIndex, setCurrentIndex] = useState(0);
-	const [direction, setDirection] = useState("forward"); // New state for direction
+	const [direction, setDirection] = useState("forward");
+	const [containerHeight, setContainerHeight] = useState(0); // State for container height
 
 	useEffect(() => {
 		const interval = setInterval(() => {
@@ -99,6 +100,13 @@ function AnimatedImage({ group, positionTop, fadeDuration }) {
 		return () => clearInterval(interval);
 	}, [group, currentIndex, direction]);
 
+	const handleImageLoad = (event) => {
+		// Handler for onLoad
+		if (!containerHeight) {
+			setContainerHeight(event.target.height);
+		}
+	};
+
 	const transitions = useTransition(currentIndex, {
 		from: { opacity: 0, filter: "brightness(0.5)" },
 		enter: { opacity: 1, filter: "brightness(1)" },
@@ -106,22 +114,30 @@ function AnimatedImage({ group, positionTop, fadeDuration }) {
 		config: { duration: fadeDuration },
 	});
 
-	return transitions((style, item) => (
-		<animated.img
-			src={imageGroups[group][item]}
-			alt={`${group}-image-${item}`}
-			style={{
-				...style,
-				position: "absolute",
-				top: positionTop,
-				left: 0,
-				right: 0,
-				bottom: 0,
-				zIndex: 0,
-			}}
-		/>
-	));
+	return (
+		<div style={{ position: "relative", height: `${containerHeight}px` }}>
+			{" "}
+			{/* Wrapper div */}
+			{transitions((style, item) => (
+				<animated.img
+					src={imageGroups[group][item]}
+					alt={`${group}-image-${item}`}
+					onLoad={handleImageLoad} // Added onLoad
+					style={{
+						...style,
+						position: "absolute",
+						top: positionTop,
+						left: 0,
+						right: 0,
+						bottom: 0,
+						zIndex: 0,
+					}}
+				/>
+			))}
+		</div>
+	);
 }
+
 function ImageGroup({
 	group,
 	top,
@@ -130,8 +146,9 @@ function ImageGroup({
 	toggle,
 	setToggle,
 }) {
-	const buttonStyle = {
+	const buttonContainerStyle = {
 		position: "absolute",
+		top: 0,
 		left: "10px",
 		zIndex: 20,
 		backgroundColor: "#fff",
@@ -139,16 +156,22 @@ function ImageGroup({
 		borderRadius: "4px",
 		padding: "5px 10px",
 		cursor: "pointer",
+		display: "flex", // Added for flex layout
+		alignItems: "center", // Align items to the center
+		gap: "10px", // Space between elements
+		marginBottom: "20px",
 	};
 
 	return (
-		<div>
-			<div style={{ ...buttonStyle, top }}>
+		<div
+			style={{ position: "relative", marginBottom: "20px", minHeight: "60px" }}>
+			<div style={buttonContainerStyle}>
+				<span style={{ fontWeight: "bold" }}>{group}</span> {/* Series Name */}
 				<button
 					onClick={() =>
 						setToggle((prev) => ({ ...prev, [group]: !prev[group] }))
 					}>
-					{toggle[group] ? `Hide this series: ` : `Show this series: `}
+					{toggle[group] ? `Hide this series` : `Show this series`}
 				</button>
 				<span>Animation speed: </span>
 				<input
@@ -163,12 +186,10 @@ function ImageGroup({
 			{toggle[group] ? (
 				<AnimatedImage
 					group={group}
-					positionTop={top}
+					positionTop="0px"
 					fadeDuration={fadeDuration}
 				/>
-			) : (
-				<div style={{ position: "absolute", top, left: "200px" }}>{group}</div>
-			)}
+			) : null}
 		</div>
 	);
 }

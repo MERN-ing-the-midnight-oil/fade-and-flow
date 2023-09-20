@@ -146,11 +146,8 @@ function ImageGroup({
 	toggle,
 	setToggle,
 }) {
-	const buttonContainerStyle = {
-		position: "absolute",
-		top: 0,
-		left: "10px",
-		zIndex: 20,
+	const buttonStyle = {
+		marginBottom: "10px",
 		backgroundColor: "#fff",
 		border: "1px solid #ddd",
 		borderRadius: "4px",
@@ -159,8 +156,8 @@ function ImageGroup({
 	};
 
 	return (
-		<div style={{ position: "relative", marginBottom: "20px" }}>
-			<div style={buttonContainerStyle}>
+		<div style={{ marginBottom: "20px" }}>
+			<div style={buttonStyle}>
 				<button
 					onClick={() =>
 						setToggle((prev) => ({ ...prev, [group]: !prev[group] }))
@@ -177,15 +174,17 @@ function ImageGroup({
 				/>
 				<span>{fadeDuration} ms</span>
 			</div>
-			{toggle[group] ? (
-				<AnimatedImage
-					group={group}
-					positionTop="0px"
-					fadeDuration={fadeDuration}
-				/>
-			) : (
-				<div style={{ marginTop: "20px" }}>{group}</div>
-			)}
+			<div style={{ position: "relative", top }}>
+				{toggle[group] ? (
+					<AnimatedImage
+						group={group}
+						positionTop="0px" // Since the image is now within its own relative container
+						fadeDuration={fadeDuration}
+					/>
+				) : (
+					<div>{group}</div>
+				)}
+			</div>
 		</div>
 	);
 }

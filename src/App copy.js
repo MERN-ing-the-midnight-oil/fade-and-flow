@@ -75,8 +75,7 @@ function PreloadImages() {
 
 function AnimatedImage({ group, positionTop, fadeDuration }) {
 	const [currentIndex, setCurrentIndex] = useState(0);
-	const [direction, setDirection] = useState("forward");
-	const [containerHeight, setContainerHeight] = useState(0); // State for container height
+	const [direction, setDirection] = useState("forward"); // New state for direction
 
 	useEffect(() => {
 		const interval = setInterval(() => {
@@ -100,13 +99,6 @@ function AnimatedImage({ group, positionTop, fadeDuration }) {
 		return () => clearInterval(interval);
 	}, [group, currentIndex, direction]);
 
-	const handleImageLoad = (event) => {
-		// Handler for onLoad
-		if (!containerHeight) {
-			setContainerHeight(event.target.height);
-		}
-	};
-
 	const transitions = useTransition(currentIndex, {
 		from: { opacity: 0, filter: "brightness(0.5)" },
 		enter: { opacity: 1, filter: "brightness(1)" },
@@ -114,30 +106,22 @@ function AnimatedImage({ group, positionTop, fadeDuration }) {
 		config: { duration: fadeDuration },
 	});
 
-	return (
-		<div style={{ position: "relative", height: `${containerHeight}px` }}>
-			{" "}
-			{/* Wrapper div */}
-			{transitions((style, item) => (
-				<animated.img
-					src={imageGroups[group][item]}
-					alt={`${group}-image-${item}`}
-					onLoad={handleImageLoad} // Added onLoad
-					style={{
-						...style,
-						position: "absolute",
-						top: positionTop,
-						left: 0,
-						right: 0,
-						bottom: 0,
-						zIndex: 0,
-					}}
-				/>
-			))}
-		</div>
-	);
+	return transitions((style, item) => (
+		<animated.img
+			src={imageGroups[group][item]}
+			alt={`${group}-image-${item}`}
+			style={{
+				...style,
+				position: "absolute",
+				top: positionTop,
+				left: 0,
+				right: 0,
+				bottom: 0,
+				zIndex: 0,
+			}}
+		/>
+	));
 }
-
 function ImageGroup({
 	group,
 	top,
@@ -146,9 +130,8 @@ function ImageGroup({
 	toggle,
 	setToggle,
 }) {
-	const buttonContainerStyle = {
+	const buttonStyle = {
 		position: "absolute",
-		top: 0,
 		left: "10px",
 		zIndex: 20,
 		backgroundColor: "#fff",
@@ -159,8 +142,8 @@ function ImageGroup({
 	};
 
 	return (
-		<div style={{ position: "relative", marginBottom: "20px" }}>
-			<div style={buttonContainerStyle}>
+		<div>
+			<div style={{ ...buttonStyle, top }}>
 				<button
 					onClick={() =>
 						setToggle((prev) => ({ ...prev, [group]: !prev[group] }))
@@ -180,11 +163,11 @@ function ImageGroup({
 			{toggle[group] ? (
 				<AnimatedImage
 					group={group}
-					positionTop="0px"
+					positionTop={top}
 					fadeDuration={fadeDuration}
 				/>
 			) : (
-				<div style={{ marginTop: "20px" }}>{group}</div>
+				<div style={{ position: "absolute", top, left: "200px" }}>{group}</div>
 			)}
 		</div>
 	);
